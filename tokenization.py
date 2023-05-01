@@ -3,7 +3,6 @@ from tensorflow_text.tools.wordpiece_vocab import bert_vocab_from_dataset as ber
 import tensorflow_text as tf_text
 import re
 import pathlib
-import numpy as np
 
 
 def write_vocab_file(filepath, vocab):
@@ -40,31 +39,6 @@ def build_vocabs_from_dataset(lang1_dataset,
         write_vocab_file(vocab2_path, vocab2)
 
     return vocab1, vocab2
-
-
-def get_datasets(dataset):
-    """
-    given a .txt file with translations separated by '\t' returns 2 separate
-    tensorflow datasets of one language each
-
-    input: dataset (str): path to the dataset file
-    return:
-    """
-
-    dataset1, dataset2 = np.loadtxt(dataset,
-                                    usecols=(0, 1),
-                                    encoding='utf-8',
-                                    unpack=True,
-                                    dtype='str',
-                                    delimiter='\t')
-
-    dataset1 = tf.convert_to_tensor(dataset1)
-    dataset2 = tf.convert_to_tensor(dataset2)
-
-    dataset1 = tf.data.Dataset.from_tensor_slices(dataset1)
-    dataset2 = tf.data.Dataset.from_tensor_slices(dataset2)
-
-    return dataset1, dataset2
 
 
 class CustomTokenizer(tf.Module):

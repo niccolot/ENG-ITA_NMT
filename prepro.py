@@ -1,9 +1,40 @@
 import tensorflow as tf
+import numpy as np
+
 
 # hyper_parameters
 batch_size = 64
 max_tokens = 65
 buffer_size = 20000  # big number for the shuffling function
+
+
+def get_datasets(dataset, zip=True):
+    """
+    given a .txt file with translations separated by '\t' returns 2 separate
+    tensorflow datasets of one language each
+
+    input: dataset (str): path to the dataset file
+    param: zip (bool) if one needs the paired translations
+    return: separated or paired tf.data.Dataset objects
+    """
+
+    dataset1, dataset2 = np.loadtxt(dataset,
+                                    usecols=(0, 1),
+                                    encoding='utf-8',
+                                    unpack=True,
+                                    dtype='str',
+                                    delimiter='\t')
+
+    dataset1 = tf.convert_to_tensor(dataset1)
+    dataset2 = tf.convert_to_tensor(dataset2)
+
+    dataset1 = tf.data.Dataset.from_tensor_slices(dataset1)
+    dataset2 = tf.data.Dataset.from_tensor_slices(dataset2)
+
+    if zip:
+        return tf.data.Dataset.zip((dataset1, dataset2))
+    else:
+        return dataset1, dataset2
 
 
 def teacher_forcing(lang1, lang2, tokenizer_lang1, tokenizer_lang2):
@@ -36,7 +67,7 @@ def teacher_forcing(lang1, lang2, tokenizer_lang1, tokenizer_lang2):
     lang1 = lang1[:, :max_tokens]  # trim longer sequences
     lang1 = lang1.to_tensor()  # ragged to 0 padded dense tensor
 
-    lang2 = tokenizer_lang1(lang2)
+    lang2 = tokenizer_lang2(lang2)
 
     # for input and labels the last and first token respectively will
     # be dropped for the teacher forcing, so the +1
@@ -47,15 +78,17 @@ def teacher_forcing(lang1, lang2, tokenizer_lang1, tokenizer_lang2):
     return (lang1, lang2_input), lang2_target
 
 
-def get_batches(dataset):
+def get_batches(dataset, tokenizer_lang1, tokenizer_lang2):
     """
     get the preprocessed dataset to be fed to the model in a teacher forcing fashion
 
     :param dataset: (lang1, lang2_input), lang2_target teacher forcing dataset
+    :param tokenizer_lang1 tokenizer for language 1
+    :param tokenizer_lang2 tokenizer for language 2
     :return: preprocessed dataset
     """
     return dataset\
         .shuffle(buffer_size)\
         .batch(batch_size)\
-        .map(teacher_forcing, tf.data.AUTOTUNE)\
+        .map(lambda x, y: teacher_forcing(x, y, tokenizer_lang1, tokenizer_lang2))\
         .prefetch(buffer_size=tf.data.AUTOTUNE)
