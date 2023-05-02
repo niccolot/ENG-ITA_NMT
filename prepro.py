@@ -8,13 +8,13 @@ max_tokens = 65
 buffer_size = 20000  # big number for the shuffling function
 
 
-def get_datasets(dataset, zip=True):
+def get_datasets(dataset, zipped=True):
     """
     given a .txt file with translations separated by '\t' returns 2 separate
     tensorflow datasets of one language each
 
     input: dataset (str): path to the dataset file
-    param: zip (bool) if one needs the paired translations
+    param: zipped (bool) if one needs the paired translations
     return: separated or paired tf.data.Dataset objects
     """
 
@@ -31,7 +31,7 @@ def get_datasets(dataset, zip=True):
     dataset1 = tf.data.Dataset.from_tensor_slices(dataset1)
     dataset2 = tf.data.Dataset.from_tensor_slices(dataset2)
 
-    if zip:
+    if zipped:
         return tf.data.Dataset.zip((dataset1, dataset2))
     else:
         return dataset1, dataset2
