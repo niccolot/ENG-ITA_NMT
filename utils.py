@@ -19,11 +19,15 @@ class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
 
 
 def masked_loss(label, pred):
-    mask = label != 0
+    """
+    masked loss in order to ignore padding targets
+    """
+    mask = label != 0  # (bool) tensor with 'True' values where the targets are not padding tokens
+    # loss without reduction because the normalization will be done with the number of non-padding tokens
     loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True, reduction='none')
     loss = loss_object(label, pred)
 
-    mask = tf.cast(mask, dtype=loss.dtype)
+    mask = tf.cast(mask, dtype=loss.dtype)  # bool to float casting
     loss *= mask
 
     loss = tf.reduce_sum(loss) / tf.reduce_sum(mask)
@@ -31,12 +35,16 @@ def masked_loss(label, pred):
 
 
 def masked_accuracy(label, pred):
+    """
+    masked accuracy in order to ignore padding targets
+    """
     pred = tf.argmax(pred, axis=2)
     label = tf.cast(label, pred.dtype)
     match = label == pred
 
     mask = label != 0
 
+    # masked accuracy counts only correctly predicted and non-padding tokens
     match = match & mask
 
     match = tf.cast(match, dtype=tf.float32)
