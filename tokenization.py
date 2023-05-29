@@ -42,10 +42,18 @@ def build_vocabs_from_dataset(lang1_dataset,
 
 
 class CustomTokenizer(tf.Module):
-    def __init__(self, reserved_tokens, vocab_path):
+    def __init__(self, vocab_path):
+        """
+        tokenizer to be exported and used as need
+
+        :param vocab_path: path to the vocabulary file built with 'build_vocabs_from_dataset'
+        """
         super().__init__()
+
+        # the tokenizer itself
         self.tokenizer = tf_text.BertTokenizer(vocab_path, lower_case=True)
-        self._reserved_tokens = reserved_tokens
+        self._reserved_tokens = ["[PAD]", "[UNK]", "[START]", "[END]"]
+
         # makes the export work when the model needs an external file
         self._vocab_path = tf.saved_model.Asset(vocab_path)
 

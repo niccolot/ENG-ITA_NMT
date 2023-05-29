@@ -1,6 +1,6 @@
 import tensorflow as tf
 import numpy as np
-
+from sklearn.model_selection import train_test_split
 
 # hyper_parameters
 batch_size = 64
@@ -8,13 +8,14 @@ max_tokens = 65
 buffer_size = 20000  # big number for the shuffling function
 
 
-def get_datasets(dataset, zipped=True):
+def get_datasets(dataset, zipped=True, test_size=0.1):
     """
     given a .txt file with translations separated by '\t' returns 2 separate
     tensorflow datasets of one language each
 
     input: dataset (str): path to the dataset file
     param: zipped (bool) if one needs the paired translations
+    param: test_size (float) % of data in val dataset
     return: separated or paired tf.data.Dataset objects
     """
 
@@ -25,16 +26,25 @@ def get_datasets(dataset, zipped=True):
                                     dtype='str',
                                     delimiter='\t')
 
-    dataset1 = tf.convert_to_tensor(dataset1)
-    dataset2 = tf.convert_to_tensor(dataset2)
+    ds1_train, ds1_val, ds2_train, ds2_val = train_test_split(dataset1, dataset2, test_size=test_size)
 
-    dataset1 = tf.data.Dataset.from_tensor_slices(dataset1)
-    dataset2 = tf.data.Dataset.from_tensor_slices(dataset2)
+    ds1_train = tf.convert_to_tensor(ds1_train)
+    ds1_val = tf.convert_to_tensor(ds1_val)
+    ds2_train = tf.convert_to_tensor(ds2_train)
+    ds2_val = tf.convert_to_tensor(ds2_val)
+
+    ds1_train = tf.data.Dataset.from_tensor_slices(ds1_train)
+    ds1_val = tf.data.Dataset.from_tensor_slices(ds1_val)
+    ds2_train = tf.data.Dataset.from_tensor_slices(ds2_train)
+    ds2_val = tf.data.Dataset.from_tensor_slices(ds2_val)
 
     if zipped:
-        return tf.data.Dataset.zip((dataset1, dataset2))
+        train_zipped = tf.data.Dataset.zip((ds1_train, ds2_train))
+        val_zipped = tf.data.Dataset.zip((ds1_val, ds2_val))
+        return train_zipped, val_zipped
+
     else:
-        return dataset1, dataset2
+        return ds1_train, ds1_val, ds2_train, ds2_val
 
 
 def teacher_forcing(lang1, lang2, tokenizer_lang1, tokenizer_lang2):
@@ -82,7 +92,7 @@ def get_batches(dataset, tokenizer_lang1, tokenizer_lang2):
     """
     get the preprocessed dataset to be fed to the model in a teacher forcing fashion
 
-    :param dataset: (lang1, lang2_input), lang2_target teacher forcing dataset
+    :param dataset: paired dataset (lang1, lang2)
     :param tokenizer_lang1 tokenizer for language 1
     :param tokenizer_lang2 tokenizer for language 2
     :return: preprocessed dataset
