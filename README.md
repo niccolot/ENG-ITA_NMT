@@ -18,18 +18,6 @@ the right modifications in the loading functions in `prepro.py`
 
 <img src= "images/itaTOeng.png" height='300' width='500'>
 
-
-## Tokenization
-
-The tokenizer used is the BERT tokenizer, implemented in a custom class in order to be saved and reloaded.
-
-In order to decide the maximum number of tokens to use the number of tokens per sentence has been plotted as
-an histogram:
-
-<img src= "images/tokens_counts.png" height='250' width='800'>
-
-and clearly the great majority of sentences doesn' t contains more than 65 tokens in both languages
-
 ## Contents
 
 * **models** contains the transformer model and all subsequent blocks
@@ -44,9 +32,19 @@ one has to just invert the order of `dataset1` and `dataset2` in the output of t
 inside `prepro.py` and switch the tokenizers in the `get_batches` function called in `train.py`
 * **utilis.py** contains the implementation of the custom learning rate, loss and metric used in the 
 [original article](https://arxiv.org/abs/1706.03762)
-* **translator_eng_ita**, **translator_ita_eng** contains the saved trained models
 * **translator.py** is a script to try the trained model on a (short) sentence given from the terminal
 * **data** contains the used dataset and vocabularies (that can be rebuilt with the functions in `tokenization.py`)
+
+## Tokenization
+
+The tokenizer used is the BERT tokenizer, implemented in a custom class in order to be saved and reloaded.
+
+In order to decide the maximum number of tokens to use the number of tokens per sentence has been plotted as
+an histogram:
+
+<img src= "images/tokens_counts.png" height='250' width='800'>
+
+and clearly the great majority of sentences doesn' t contains more than 65 tokens in both languages
 
 ## Results
 
