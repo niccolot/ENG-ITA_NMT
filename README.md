@@ -35,6 +35,8 @@ inside `prepro.py` and switch the tokenizers in the `get_batches` function calle
 * **translator.py** is a script to try the trained model on a (short) sentence given from the terminal
 * **data** contains the used dataset and vocabularies (that can be rebuilt with the functions in `tokenization.py`)
 
+The trained models are available at [for the italian to english](https://drive.google.com/drive/folders/17X_yEWHAD5RLUpJbSAymKDWI9Mwsm2iP?usp=sharing) and [for the english to italian](https://drive.google.com/drive/folders/1Ax7CrBhOE-Q8s0X9NrE6RnQFGMFgi6h6?usp=sharing)
+
 ## Tokenization
 
 The tokenizer used is the BERT tokenizer, implemented in a custom class in order to be saved and reloaded.
