@@ -16,7 +16,8 @@ sentence    translation
 i.e. sentences and translations separated by a tab character although others separators will work with the
 the right modifications in the loading functions in `prepro.py`
 
-<img src= "images/engToita.png" height='300' width='500'> <img src= "images/itaTOeng.png" height='300' width='500'>
+<img src= "images/engToita.png" height='300' width='500'> 
+<img src= "images/itaTOeng.png" height='300' width='500'>
 
 
 ## Tokenization
