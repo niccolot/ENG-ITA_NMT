@@ -16,7 +16,6 @@ sentence    translation
 i.e. sentences and translations separated by a tab character although others separators will work with the
 the right modifications in the loading functions in `prepro.py`
 
-<img src= "images/engToita.png" height='300' width='500'> 
 <img src= "images/itaTOeng.png" height='300' width='500'>
 
 
@@ -59,5 +58,6 @@ RTX 3070 (~7 min per epoch) for 20 epochs obtaining the following results
 ## TODO
 
 The next thing to look for could be how to output estetically pleasing translations (e.g. the modell will output
-every character separated by a space such as 'i ' m going to school' insted of 'i'm going to school'), making 
-sure it considers capital letters and abbreviations su as 'Mr.' or 'Ms.'
+every character separated by a space such as "i ' m going to school" insted of "i'm going to school"), making 
+sure it considers capital letters and abbreviations su as 'Mr.' or 'Ms.' and doesn't put spaces before the comma such as
+"yes, please" isnted of "yes , please"
