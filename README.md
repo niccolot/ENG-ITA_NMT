@@ -61,3 +61,11 @@ The next thing to look for could be how to speed up inference and how to output 
 every character separated by a space such as "i ' m going to school" insted of "i'm going to school"), making 
 sure it considers capital letters and abbreviations su as 'Mr.' or 'Ms.' and doesn't put spaces before the comma such as
 "yes, please" isnted of "yes , please"
+
+## References
+
+Some interesting blogs where to study the transformer model
+
+* https://lilianweng.github.io/tags/transformer/
+* http://nlp.seas.harvard.edu/annotated-transformer/
+* http://jalammar.github.io/illustrated-transformer/
