@@ -44,7 +44,7 @@ The tokenizer used is the BERT tokenizer, implemented in a custom class in order
 In order to decide the maximum number of tokens to use the number of tokens per sentence has been plotted as
 an histogram:
 
-<img src= "images/tokens_counts.png" height='250' width='800'>
+<img src= "images/tokens_counts.png" height='300' width='800'>
 
 and clearly the great majority of sentences doesn' t contains more than 65 tokens in both languages
 
@@ -57,7 +57,7 @@ RTX 3070 (~7 min per epoch) for 20 epochs obtaining the following results
 
 ## TODO
 
-The next thing to look for could be how to output estetically pleasing translations (e.g. the modell will output
+The next thing to look for could be how to speed up inference and how to output estetically pleasing translations (e.g. the modell will output
 every character separated by a space such as "i ' m going to school" insted of "i'm going to school"), making 
 sure it considers capital letters and abbreviations su as 'Mr.' or 'Ms.' and doesn't put spaces before the comma such as
 "yes, please" isnted of "yes , please"
