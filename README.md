@@ -51,7 +51,7 @@ and clearly the great majority of sentences doesn' t contains more than 65 token
 ## Results
 
 The model has been trained with the hyperparameters given in the [original article](https://arxiv.org/abs/1706.03762) on a 
-RTX 3070 (~7 min per epoch) for 20 epochs obtaining the following results
+RTX 3070 (~7 min per epoch) for 20 epochs obtaining the following results for english to italian and italian to english respectively
 
 <img src= "images/eng_ita_loss.png" height='300' width='500'> <img src= "images/ita_eng_loss.png" height='300' width='500'>
 
